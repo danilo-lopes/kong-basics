@@ -3,3 +3,4 @@ manifests/kong/controlplane/gondor-certificate.yaml
 manifests/kong/controlplane/cluster-certificate.yaml
 manifests/kong/dataplane/gondor-certificate.yaml
 manifests/kong/dataplane/cluster-certificate.yaml
+manifests/kong/controlplane/kong-db-password.yaml
