@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  index.html:
+    '{"message":"hello from application 02"}'
+kind: ConfigMap
+metadata:
+  name: application-02-configmap

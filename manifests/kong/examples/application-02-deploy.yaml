@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: application-02
+  name: application-02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application-02
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: "50%"
+      maxUnavailable: "50%"
+  template:
+    metadata:
+      labels:
+        app: application-02
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/
+          name: nginx-conf
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: application-02-configmap

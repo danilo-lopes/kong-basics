@@ -1,0 +1,98 @@
+fullnameOverride: "kong"
+
+image:
+  repository: kong
+  tag: "3.5"
+
+replicaCount: 2
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi
+
+env:
+  prefix: /kong_prefix/
+  database: postgres
+  role: control_plane
+  cluster_cert: /etc/secrets/kong-cluster-cert/tls.crt
+  cluster_cert_key: /etc/secrets/kong-cluster-cert/tls.key
+  database: postgres
+  pg_host: 192.168.15.103 
+  pg_password:
+    valueFrom:
+      secretKeyRef:
+        name: kong-db-password
+        key: pg_password
+  pg_port: 5432
+  pg_user: kong
+
+manager:
+  enabled: true
+  annotations:
+    konghq.com/protocol: "https"
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    tls: gondor-wildcard-certificate
+    hostname: kong-manager.gondor.com.br
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    path: /
+    pathType: ImplementationSpecific
+  tls:
+    enabled: true
+    servicePort: 8445
+    containerPort: 8445
+    parameters:
+    - http2
+
+admin:
+  enabled: true
+  annotations:
+    konghq.com/protocol: "https"
+  http:
+    enabled: true
+    servicePort: 8001
+    containerPort: 8001
+  ingress:
+    enabled: true
+    ingressClassName: nginx 
+    tls: gondor-wildcard-certificate
+    hostname: kong-admin-api.gondor.com.br
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    path: /
+    pathType: ImplementationSpecific
+  tls:
+    enabled: true
+    servicePort: 8444
+    containerPort: 8444
+    parameters:
+    - http2
+
+cluster:
+  enabled: true
+  tls:
+    enabled: true
+    servicePort: 8005
+    containerPort: 8005
+
+proxy:
+  enabled: false
+
+secretVolumes:
+- kong-cluster-cert
+
+postgresql:
+  enabled: false
+
+ingressController:
+  enabled: true 
+
+# helm upgrade --install kong kong/kong --namespace kong --values values.yaml --version 2.38.0

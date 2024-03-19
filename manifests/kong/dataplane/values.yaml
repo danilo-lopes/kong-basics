@@ -1,0 +1,59 @@
+fullnameOverride: "kong-dp"
+
+image:
+  repository: kong
+  tag: "3.5"
+
+deployment:
+  daemonset: true
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi
+
+proxy:
+  enable: true
+  type: NodePort
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    tls: gondor-wildcard-certificate
+    hostname: api.gondor.com.br
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    path: /
+    pathType: ImplementationSpecific
+  tls:
+    enabled: true
+    servicePort: 8443
+    containerPort: 8443
+    parameters:
+    - http2
+
+env:
+  trusted_ips: 10.0.0.0/8
+  real_ip_recursive: "on"
+  real_ip_header: X-Forwarded-For
+  prefix: /kong_prefix/
+  database: "off"
+  role: data_plane
+  cluster_control_plane: kong-cluster.kong.svc.cluster.local:8005
+  lua_ssl_trusted_certificate: /etc/secrets/kong-cluster-cert/tls.crt
+  cluster_cert: /etc/secrets/kong-cluster-cert/tls.crt
+  cluster_cert_key: /etc/secrets/kong-cluster-cert/tls.key
+
+admin:
+  enabled: false
+
+secretVolumes:
+- kong-cluster-cert
+
+ingressController:
+  enabled: false
+
+# helm upgrade --install kong-dp kong/kong --namespace kong-dp --values values.yaml --version 2.38.0

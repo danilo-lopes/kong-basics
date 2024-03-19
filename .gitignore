@@ -1,0 +1,5 @@
+.DS_Store
+manifests/kong/controlplane/gondor-certificate.yaml
+manifests/kong/controlplane/cluster-certificate.yaml
+manifests/kong/dataplane/gondor-certificate.yaml
+manifests/kong/dataplane/cluster-certificate.yaml
