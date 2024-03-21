@@ -13,34 +13,25 @@ Este repositório tem como o objetivo entender o que é um API Gateway, procedim
   * [Topologias de Instalação do Kong](#Topologias-de-Instalação-do-Kong)
   * [Hands-On](#Hands-On)
     * [Mostrando o Ambiente](#Mostrando-o-Ambiente)
-      * [Examplo de configuração do banco de dados](#Examplo-de-configuração-do-banco-d-dados)
+    * [Examplo de configuração do banco de dados](#Examplo-de-configuração-do-banco-d-dados)
     * [Instalação Via Helm - Hybrid Mode](#Instalação-Via-Helm---Hybrid-Mode)
     * [Exemplos de Configurações](#Exemplos-de-Configurações)
-      * [IP Restriction](#)
-      * [Via Web](#)
-        * [Gateway Services](#)
-        * [Routes](#)
-        * [Consumers](#)
-        * [Plugins](#)
-          * [Autenticação via JWT em uma rota](#)
-          * [Autenticação via API Key](#)
-          * [Rate Limit](#)
-      * [Via API](#)
-        * [Gateway Services](#)
-        * [Routes](#)
-        * [Consumers](#)
-        * [Plugins](#)
-          * [Autenticação via JWT em uma rota](#)
-          * [Autenticação via API Key](#)
-          * [Rate Limit](#)
+      * [Via Web](#Via-Web)
+      * [Via API](#Via-API)
+        * [Gateway Service](#Gateway-Service)
+        * [Route](#Route)
+        * [Consumer](#Consumer)
+        * [Autenticação via JWT](#Autenticação-via-JWT)
+        * [Autenticação via API Key](#Autenticação-via-API-Key)
+        * [Rate Limit](#Rate-Limit)
 <!--te-->
 
 ## Requisitos:
 
-* Um cluster Kubernetes na versão `>= v1.28.x`;
-* Um bando de dados PostgreSQL `>= 12`;
-* Helm 3;
-* Um Certificado SSL (opcional).
+* Um cluster Kubernetes na versão `>= v1.28.x`
+* Um bando de dados PostgreSQL `>= 12`
+* Helm 3
+* Um Certificado SSL para Ingress (opcional)
 
 ## O que é um API Gateway
 
@@ -67,7 +58,7 @@ O Kong Gateway possui diversas possibilidades de instalação, no link abaixo te
 
 ### Mostrando o Ambiente
 
-Mostre o seu ambiente para o pessoal :)
+`Mostre o seu ambiente para o pessoal :)`
 
 ### Examplo de configuração do banco de dados
 
@@ -108,11 +99,14 @@ Mostre o seu ambiente para o pessoal :)
 `systemctl stop postgresql`
 `systemctl start postgresql`
 `systemctl status postgresql`
+
 </details>
 
 ### Instalação Via Helm - Hybrid Mode
 
-Agora iremos privionar um ambiente do Kong Gateway usando o modo de instalação Hybrid na versão 2.38.0:
+Agora iremos privionar um ambiente do Kong Gateway usando o modo de instalação Hybrid na versão 2.38.0.
+
+Manifestos necessários antes de instalação:
 
 1. Certificado do Cluster;
 2. Certificado do seu Dominio (opcional);
@@ -122,6 +116,7 @@ Agora iremos privionar um ambiente do Kong Gateway usando o modo de instalação
 6. Aplicações de examplo;
 
 <details>
+
 Kong Control Plane:
 
 `helm upgrade --install kong kong/kong --namespace kong --values values.yaml --version 2.38.0`
@@ -132,6 +127,26 @@ Kong Dataplane:
 </details>
 
 ### Exemplos de Configurações
+
+#### Via Web
+
+`Demonstração de publicação de uma API e algumas configurações :)`
+
+* Gateway Service
+* Route
+* Consumer
+* Autenticação via JWT em uma rota
+* Autenticação via API Key
+* Rate Limit
+
+#### Via API
+
+* Gateway Service
+* Route
+* Consumer
+* Autenticação via JWT em uma rota
+* Autenticação via API Key
+* Rate Limit
 
 <details>
 </details>
