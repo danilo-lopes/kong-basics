@@ -144,7 +144,7 @@ Kong Dataplane:
 
 ### Exemplos de Configurações
 
-`Demonstração de publicação de uma API e algumas configurações :)`
+`Publicação de API e algumas configurações :)`
 
 * Gateway Service
 * Route
@@ -155,6 +155,7 @@ Kong Dataplane:
 * Rate Limit
 
 <details>
+
 ```
 curl -X POST https://kong-admin-api.gondor.com.br/services \
   -H "Content-Type: application/json" \
