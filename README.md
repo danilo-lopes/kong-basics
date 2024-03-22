@@ -16,14 +16,6 @@ Este repositório tem como o objetivo entender o que é um API Gateway, procedim
     * [Examplo de configuração do banco de dados](#Examplo-de-configuração-do-banco-d-dados)
     * [Instalação Via Helm - Hybrid Mode](#Instalação-Via-Helm---Hybrid-Mode)
     * [Exemplos de Configurações](#Exemplos-de-Configurações)
-      * [Via Web](#Via-Web)
-      * [Via API](#Via-API)
-        * [Gateway Service](#Gateway-Service)
-        * [Route](#Route)
-        * [Consumer](#Consumer)
-        * [Autenticação via JWT](#Autenticação-via-JWT)
-        * [Autenticação via API Key](#Autenticação-via-API-Key)
-        * [Rate Limit](#Rate-Limit)
 <!--te-->
 
 ## Requisitos:
@@ -90,6 +82,8 @@ O Kong Gateway possui diversas possibilidades de instalação, no link abaixo te
 `CREATE ROLE kong_inc;`
 `GRANT kong_inc TO kong;`
 `GRANT ALL PRIVILEGES ON DATABASE kong TO kong_inc;`
+`\c kong;`
+`ALTER SCHEMA public OWNER TO kong_inc;`
 
 **Agora a configuração de conexão externa ao banco de dados:**
 
@@ -108,14 +102,36 @@ Agora iremos privionar um ambiente do Kong Gateway usando o modo de instalação
 
 Manifestos necessários antes de instalação:
 
-1. Certificado do Cluster;
-2. Certificado do seu Dominio (opcional);
-3. Senha do Banco de Dados;
-4. Criação dos namespaces;
-5. Manifestos do Kong Controlplane e do Kong Dataplane;
-6. Aplicações de examplo;
+1. Certificado do Cluster
+
+```
+openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
+  -keyout cluster.key -out cluster.crt \
+  -days 1095 -subj "/CN=kong_clustering"
+```
+
+```
+kubectl create secret tls kong-cluster-cert --cert=cluster.crt --key=cluster.key -n kong
+```
+
+```
+kubectl create secret tls kong-cluster-cert --cert=cluster.crt --key=cluster.key -n kong-dp
+```
+
+2. Certificado do seu Dominio (opcional)
+3. Senha do Banco de Dados
+4. Criação dos namespaces
+5. Manifestos do Kong Controlplane e do Kong Dataplane
+6. Aplicações de examplo
 
 <details>
+
+Repositório do Helm Chart:
+
+```
+helm repo add kong https://charts.konghq.com
+helm repo update
+```
 
 Kong Control Plane:
 
@@ -128,25 +144,161 @@ Kong Dataplane:
 
 ### Exemplos de Configurações
 
-#### Via Web
-
 `Demonstração de publicação de uma API e algumas configurações :)`
 
 * Gateway Service
 * Route
 * Consumer
-* Autenticação via JWT em uma rota
-* Autenticação via API Key
-* Rate Limit
-
-#### Via API
-
-* Gateway Service
-* Route
-* Consumer
+* IP Restriiction
 * Autenticação via JWT em uma rota
 * Autenticação via API Key
 * Rate Limit
 
 <details>
+```
+curl -X POST https://kong-admin-api.gondor.com.br/services \
+  -H "Content-Type: application/json" \
+  -d @- << 'EOF'
+{
+  "name": "application-02",
+  "retries": 2,
+  "protocol": "http",
+  "host": "application-02.default.svc",
+  "port": 8080,
+  "path": "/",
+  "connect_timeout": 10,
+  "tags": ["application-02"],
+  "enabled": true
+}
+EOF
+```
+
+```
+curl -X POST https://kong-admin-api.gondor.com.br/routes \
+  -H "Content-Type: application/json" \
+  -d @- << 'EOF'
+{
+  "name": "application-02",
+  "protocols": [
+    "http"
+  ],
+  "methods": [
+    "GET"
+  ],
+  "paths": [
+    "/application-02"
+  ],
+  "preserve_host": true,
+  "request_buffering": true,
+  "response_buffering": true,
+  "tags": [
+    "application-02"
+  ],
+  "service": {
+    "id": "50c6ac5e-5bac-462f-b3db-d12151fc746b"
+  }
+}
+EOF
+```
+
+```
+curl -X POST https://kong-admin-api.gondor.com.br/routes/application-02/plugins \
+  -H "Content-Type: application/json" \
+  -d @- << 'EOF'
+{
+  "config": {
+    "header_names": [
+      "Authorization"
+    ],
+    "key_claim_name": "iss",
+    "claims_to_verify": [
+      "exp"
+    ],
+    "maximum_expiration": 86400,
+    "uri_param_names": [
+      "jwt"
+    ],
+    "run_on_preflight": true
+  },
+  "tags": [
+    "application-02"
+  ],
+  "instance_name": "application-02-jwt",
+  "name": "jwt",
+  "enabled": true,
+  "route": {
+    "id": "ec3ffa19-13e2-46f2-9965-5c01af5d9ca1"
+  },
+  "service": {
+    "id": "50c6ac5e-5bac-462f-b3db-d12151fc746b"
+  }
+}
+EOF
+```
+
+```
+curl -X POST https://kong-admin-api.gondor.com.br/consumers \
+  -H "Content-Type: application/json" \
+  -d @- << 'EOF'
+{
+  "username": "application-02",
+  "custom_id": "1234",
+  "tags": [
+    "application-02"
+  ]
+}
+EOF
+```
+
+```
+curl -X POST https://kong-admin-api.gondor.com.br/consumers/application-02/jwt \
+  -H "Content-Type: application/json" \
+  -d @- << 'EOF'
+{
+  "algorithm": "HS256",
+  "key": "H8WBDhQlcfjoFmIiYymmkRm1y0A2c5WU",
+  "secret": "n415M6OrVnR4Dr1gyErpta0wSKQ2cMzK",
+  "tags": ["application-02"]
+}
+EOF
+```
+
+```
+python main.py \
+  -secret_key="n415M6OrVnR4Dr1gyErpta0wSKQ2cMzK" \
+  -claim_key="H8WBDhQlcfjoFmIiYymmkRm1y0A2c5WU" \
+  -claim_key_name="iss" \
+  -set_expiration_token="Yes" \
+  -expiration_token_age_in_days="1"
+```
+
+```
+curl -X POST https://kong-admin-api.gondor.com.br/routes/application-02/plugins \
+  -H "Content-Type: application/json" \
+  -d @- << 'EOF'
+{
+  "name": "rate-limiting",
+  "route": {
+    "id": "ec3ffa19-13e2-46f2-9965-5c01af5d9ca1"
+  },
+  "service": {
+    "id": "50c6ac5e-5bac-462f-b3db-d12151fc746b"
+  },
+  "instance_name": "application-02-rate-limit",
+  "config": {
+    "hour": 60,
+    "minute": 1,
+    "error_message": "voce excedeu o limite de chamada de api cabecudo"
+  },
+  "protocols": [
+    "http",
+    "https"
+  ],
+  "enabled": true,
+  "tags": [
+    "application-02"
+  ]
+}
+EOF
+```
 </details>

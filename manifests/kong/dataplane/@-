@@ -1,0 +1,9 @@
+HTTP/2 400 
+date: Thu, 21 Mar 2024 23:16:07 GMT
+content-type: application/json; charset=utf-8
+content-length: 36
+access-control-allow-origin: *
+access-control-allow-credentials: true
+x-kong-admin-latency: 5
+strict-transport-security: max-age=31536000; includeSubDomains
+

@@ -28,6 +28,7 @@ env:
         key: pg_password
   pg_port: 5432
   pg_user: kong
+  pg_database: kong
 
 manager:
   enabled: true
