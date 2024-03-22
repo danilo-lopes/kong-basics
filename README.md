@@ -27,24 +27,15 @@ Este repositório tem como o objetivo entender o que é um API Gateway, procedim
 
 ## O que é um API Gateway
 
-É uma ferramenta de gerenciamento de API que atua entre o cliente (requisição) e uma gama de servidores (serviços), atua como um proxy reverso processando chamadas de API e as encaminhando para algum respectivo serviço em questão.
-
-O processamento da requisição é baseado em políticas, que podem ser definidas no Path, Header, Query parameter da requisição e entre outros.
-
 <img src="images/1.png" width="100%" height="50%">
 
 ## Sobre o Kong Gateway
 
-O [Kong Gateway](https://docs.konghq.com/gateway/3.6.x/#main) é um API Gateway desenvolvido em cima do Nginx com o foco em multi-cloud, arquiteturas distribuidas e otimizado para microserviços. Conhecido pela gama de configurações que podemos realizar no ambiente através de modulos e plugins. Então podemos integra-lo na frente de diversas aplicações REST ou HTTP.
-
-Uns dos seus diferencias é a possibilidade de diversos tipos de instalações.
+[Doc](https://docs.konghq.com/gateway/3.6.x/#main)
 
 ## Topologias de Instalação do Kong
 
-O Kong Gateway possui diversas possibilidades de instalação, no link abaixo temos a documentação de todos os modos:
-
 [Deployment Topologies](https://docs.konghq.com/gateway/3.6.x/production/deployment-topologies/)
-
 
 ## Hands-On
 
