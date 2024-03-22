@@ -156,6 +156,8 @@ Kong Dataplane:
 
 <details>
 
+Criacao de um *Gateway Service* apontando para o service do Kubernetes da aplicação:
+
 ```
 curl -X POST https://kong-admin-api.gondor.com.br/services \
   -H "Content-Type: application/json" \
@@ -173,6 +175,8 @@ curl -X POST https://kong-admin-api.gondor.com.br/services \
 }
 EOF
 ```
+
+Publicando a *Rota*:
 
 ```
 curl -X POST https://kong-admin-api.gondor.com.br/routes \
@@ -201,6 +205,8 @@ curl -X POST https://kong-admin-api.gondor.com.br/routes \
 }
 EOF
 ```
+
+Habilitando mecanismo de autenticação na rota publicada:
 
 ```
 curl -X POST https://kong-admin-api.gondor.com.br/routes/application-02/plugins \
@@ -237,6 +243,8 @@ curl -X POST https://kong-admin-api.gondor.com.br/routes/application-02/plugins 
 EOF
 ```
 
+Criando um consumidor para podemos ter autorização:
+
 ```
 curl -X POST https://kong-admin-api.gondor.com.br/consumers \
   -H "Content-Type: application/json" \
@@ -251,6 +259,8 @@ curl -X POST https://kong-admin-api.gondor.com.br/consumers \
 EOF
 ```
 
+Registrando credencial JWT para o consumidor:
+
 ```
 curl -X POST https://kong-admin-api.gondor.com.br/consumers/application-02/jwt \
   -H "Content-Type: application/json" \
@@ -264,6 +274,8 @@ curl -X POST https://kong-admin-api.gondor.com.br/consumers/application-02/jwt \
 EOF
 ```
 
+Gerando um token de acesso:
+
 ```
 python main.py \
   -secret_key="n415M6OrVnR4Dr1gyErpta0wSKQ2cMzK" \
@@ -272,6 +284,8 @@ python main.py \
   -set_expiration_token="Yes" \
   -expiration_token_age_in_days="1"
 ```
+
+Habilitando Rate Limite para a rota:
 
 ```
 curl -X POST https://kong-admin-api.gondor.com.br/routes/application-02/plugins \
