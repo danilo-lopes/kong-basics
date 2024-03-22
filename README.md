@@ -59,13 +59,17 @@ O Kong Gateway possui diversas possibilidades de instalação, no link abaixo te
 **Habilitando o repositório:**
 
 `sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'`
+
 `wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -`
+
 `apt update`
 
 **Instalação do PostgreSQL:**
 
 `apt install postgresql -y`
+
 `systemctl enable postgresql`
+
 `systemctl status postgresql`
 
 **Configuração do Banco:**
@@ -77,21 +81,34 @@ O Kong Gateway possui diversas possibilidades de instalação, no link abaixo te
 **Logando no banco e criando a database do Kong, usuário e role:**
 
 `psql`
+
 `CREATE DATABASE kong;`
+
 `CREATE ROLE kong WITH LOGIN PASSWORD '<minha senha>';`
+
 `CREATE ROLE kong_inc;`
+
 `GRANT kong_inc TO kong;`
+
 `GRANT ALL PRIVILEGES ON DATABASE kong TO kong_inc;`
+
 `\c kong;`
+
 `ALTER SCHEMA public OWNER TO kong_inc;`
 
 **Agora a configuração de conexão externa ao banco de dados:**
 
+
 `export PG_VERSION=$(ls /usr/lib/postgresql/)`
+
 `sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/$PG_VERSION/main/postgresql.conf`
+
 `echo -e "# Kong Database\nhost    kong    kong    192.168.15.0/24 md5" >> /etc/postgresql/$PG_VERSION/main/pg_hba.conf`
+
 `systemctl stop postgresql`
+
 `systemctl start postgresql`
+
 `systemctl status postgresql`
 
 </details>
