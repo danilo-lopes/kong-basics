@@ -167,7 +167,7 @@ Kong Dataplane:
 Criacao de um *Gateway Service* apontando para o service do Kubernetes da aplicação:
 
 ```
-curl -X POST https://kong-admin-api.gondor.com.br/services \
+curl -X POST https://<admin api endpoint>/services \
   -H "Content-Type: application/json" \
   -d @- << 'EOF'
 {
@@ -187,7 +187,7 @@ EOF
 Publicando a *Rota*:
 
 ```
-curl -X POST https://kong-admin-api.gondor.com.br/routes \
+curl -X POST https://<admin api endpoint>/routes \
   -H "Content-Type: application/json" \
   -d @- << 'EOF'
 {
@@ -217,7 +217,7 @@ EOF
 Habilitando mecanismo de autenticação na rota publicada:
 
 ```
-curl -X POST https://kong-admin-api.gondor.com.br/routes/application-02/plugins \
+curl -X POST https://<admin api endpoint>/routes/application-02/plugins \
   -H "Content-Type: application/json" \
   -d @- << 'EOF'
 {
@@ -254,7 +254,7 @@ EOF
 Criando um consumidor para podemos ter autorização:
 
 ```
-curl -X POST https://kong-admin-api.gondor.com.br/consumers \
+curl -X POST https://<admin api endpoint>/consumers \
   -H "Content-Type: application/json" \
   -d @- << 'EOF'
 {
@@ -270,7 +270,7 @@ EOF
 Registrando credencial JWT para o consumidor:
 
 ```
-curl -X POST https://kong-admin-api.gondor.com.br/consumers/application-02/jwt \
+curl -X POST https://<admin api endpoint>/consumers/application-02/jwt \
   -H "Content-Type: application/json" \
   -d @- << 'EOF'
 {
@@ -296,7 +296,7 @@ python main.py \
 Habilitando Rate Limite para a rota:
 
 ```
-curl -X POST https://kong-admin-api.gondor.com.br/routes/application-02/plugins \
+curl -X POST https://<admin api endpoint>/routes/application-02/plugins \
   -H "Content-Type: application/json" \
   -d @- << 'EOF'
 {
