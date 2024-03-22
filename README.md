@@ -9,11 +9,11 @@ Este repositório tem como o objetivo entender o que é um API Gateway, procedim
 <!--ts-->
   * [Requisitos](#Requisitos)
   * [O que é um API Gateway](#O-que-é-um-API-Gateway)
-  * [Kong Gateway](#Kong-Gateway)
+  * [Sobre o Kong Gateway](#Sobre-o-Kong-Gateway)
   * [Topologias de Instalação do Kong](#Topologias-de-Instalação-do-Kong)
   * [Hands-On](#Hands-On)
     * [Mostrando o Ambiente](#Mostrando-o-Ambiente)
-    * [Examplo de configuração do banco de dados](#Examplo-de-configuração-do-banco-d-dados)
+    * [Exemplo de configuração do banco de dados](#Exemplo-de-configuração-do-banco-d-dados)
     * [Instalação Via Helm - Hybrid Mode](#Instalação-Via-Helm---Hybrid-Mode)
     * [Exemplos de Configurações](#Exemplos-de-Configurações)
 <!--te-->
@@ -33,7 +33,7 @@ O processamento da requisição é baseado em políticas, que podem ser definida
 
 <img src="images/1.png" width="100%" height="50%">
 
-## Kong Gateway
+## Sobre o Kong Gateway
 
 O [Kong Gateway](https://docs.konghq.com/gateway/3.6.x/#main) é um API Gateway desenvolvido em cima do Nginx com o foco em multi-cloud, arquiteturas distribuidas e otimizado para microserviços. Conhecido pela gama de configurações que podemos realizar no ambiente através de modulos e plugins. Então podemos integra-lo na frente de diversas aplicações REST ou HTTP.
 
@@ -52,7 +52,7 @@ O Kong Gateway possui diversas possibilidades de instalação, no link abaixo te
 
 `Mostre o seu ambiente para o pessoal :)`
 
-### Examplo de configuração do banco de dados
+### Exemplo de configuração do banco de dados
 
 <details>
 
