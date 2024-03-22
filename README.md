@@ -22,7 +22,7 @@ Este repositório tem como o objetivo entender o que é um API Gateway, procedim
 
 * Um cluster Kubernetes na versão `>= v1.28.x`
 * Um bando de dados PostgreSQL `>= 12`
-* Helm 3
+* [Helm 3](https://helm.sh/docs/)
 * Um Certificado SSL para Ingress (opcional)
 
 ## O que é um API Gateway
