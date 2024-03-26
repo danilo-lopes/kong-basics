@@ -20,7 +20,7 @@ env:
   role: control_plane
   cluster_cert: /etc/secrets/kong-cluster-cert/tls.crt
   cluster_cert_key: /etc/secrets/kong-cluster-cert/tls.key
-  pg_host: 192.168.15.103 
+  pg_host: 192.168.15.103
   pg_password:
     valueFrom:
       secretKeyRef:
@@ -93,6 +93,6 @@ postgresql:
   enabled: false
 
 ingressController:
-  enabled: true 
+  enabled: false
 
 # helm upgrade --install kong kong/kong --namespace kong --values values.yaml --version 2.38.0

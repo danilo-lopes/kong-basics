@@ -1,11 +1,11 @@
 """
-    example:
-    python jwt_token_generator.py \
-    -secret_key="e71829c351aa4242c2719cbfbe671c09" \
-    -claim_key="a36c3049b36249a3c9f8891cb127243c" \
-    -claim_key_name="iss" \
-    -set_expiration_token="Yes" \
-    -expiration_token_age_in_days="1"
+example:
+python jwt_token_generator.py \
+-secret_key="<secret key>" \
+-claim_key="<claim key>" \
+-claim_key_name="iss" \
+-set_expiration_token="Yes" \
+-expiration_token_age_in_days="1"
 """
 
 
